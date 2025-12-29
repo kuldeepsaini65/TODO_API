@@ -39,6 +39,27 @@
 
 
 <section class='shadow-sm'>
+<div class="api-container">
+<code>X-API-KEY : API-KEY</code>
+<h4 class="mt-3 fs-5">Required Header</h4>
+<p>This header is required for using all the API's. KEY based Authentication is used in this project. API-KEY is stored in setting.py</p>
+
+<div class="example">
+<pre>
+<code>
+{
+  "status": "error",
+  "message": "API key missing or invalid"
+}
+</code>
+</pre>
+<p>this response will be returned when using invalid API-KEY or it is missing</p>
+</div>
+
+</div>
+
+
+
     <div class="api-container">
         <code>/api/tasks/</code>
         <h4 class="mt-3 fs-5">Fetch All Data</h4>

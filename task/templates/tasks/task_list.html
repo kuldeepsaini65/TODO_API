@@ -28,47 +28,8 @@
             </tr>
           </thead>
 
-          <tbody>
-            {% for t in tasks %}
-            <tr class="">
-              <td class="py-1 text-center py-2">
-                <div class=" text-dark ">{{ t.title }}</div>
-              </td>
-              <td class="py-1 text-center py-2">
-                <div class="  ">{{ t.description }}</div>
-              </td>
-
-              <td class="py-1 text-center py-2">
-                <span class="px-3 py-2 ">
-                  <i class="bi bi-calendar3 me-2"></i>{{ t.due_date }}
-                </span>
-              </td>
-
-
-              <td class="py-2 text-center">
-                <span class="badge bg-warning text-dark px-3 py-2 ">
-                  {{ t.status }}
-                </span>
-              </td>
-              <td class="py-3 text-center">
-                <div class="btn-group btn-group-sm" role="group">
-
-                  <a href="{% url 'task:task_update_view' id=t.id %}" class="btn btn-outline-primary" title="Edit">
-                    <i class="bi bi-pencil"></i>
-                  </a>
-
-                  <a href="{% url 'task:task_info_view' id=t.id %}" class="btn btn-outline-info" title="View">
-                    <i class="bi bi-eye"></i>
-                  </a>
-
-                  <a href="{% url 'task:task_delete_view' id=t.id %}" class="btn btn-outline-danger" title="delete">
-                    <i class="fa-solid fa-trash"></i>Delete
-                  </a>
-
-                </div>
-              </td>
-            </tr>
-            {% endfor %}
+          <tbody id="task-body"> 
+            
           </tbody>
         </table>
 
@@ -79,5 +40,85 @@
 
   </div>
 </section>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+  fetch("/api/tasks/", {
+    headers: {
+      "X-API-KEY": "kdeep@saini@8865@hello" 
+    }
+  })
+
+  .then(response => response.json())
+  .then(result => {
+    if (result.status !== "success") {
+      alert("Failed to load tasks");
+      return;
+    }
+
+    const tbody = document.getElementById("task-body");
+    tbody.innerHTML = "";
+
+    result.data.forEach(t => {
+      tbody.innerHTML += `
+        <tr>
+          <td class="text-center py-2">${t.title}</td>
+          <td class="text-center py-2">${t.description}</td>
+          <td class="text-center py-2">
+            <i class="bi bi-calendar3 me-2"></i>${t.due_date}
+          </td>
+          <td class="text-center py-2">
+            <span class="badge bg-warning text-dark px-3 py-2">
+              ${t.status}
+            </span>
+          </td>
+          <td class="text-center py-2">
+            <div class="btn-group btn-group-sm">
+
+              <a href="tasks/update/${t.id}" class="btn btn-outline-primary">
+                <i class="bi bi-pencil"></i>
+              </a>
+
+              <a href="tasks/info/${t.id}" class="btn btn-outline-info">
+                <i class="bi bi-eye"></i>
+              </a>
+
+              <button onclick="deleteTask(${t.id})"
+                class="btn btn-outline-danger">
+               <i class="bi bi-trash3-fill"></i> Delete
+              </button>
+
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+  });
+});
+
+
+function deleteTask(id) {
+  if (!confirm("Are you sure?")) return;
+
+  fetch(`api/tasks/delete/${id}`, {
+    method: "DELETE",
+    headers: {
+      "X-API-KEY": "kdeep@saini@8865@hello"
+    }
+  })
+  .then(res => res.json())
+  .then(result => {
+    if (result.status === "success") {
+      location.reload();
+    } else {
+      alert("Delete failed");
+    }
+  });
+}
+
+
+</script>
 
 {% endblock content %}
