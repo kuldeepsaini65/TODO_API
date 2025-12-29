@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="page-title shadow-sm mb-4">
+  <h1>Tasks Info - {{title}}</h1>
+  <div class="d-flex gap-2">
+    <a href="{% url 'task:task_list' %}" class="btn btn-outline-dark">
+      <i class="bi bi-list-ul"></i> List Task
+    </a>
+  </div>
+</section>
+
+
+<section class="container py-4 px-4" style="border: rgba(96, 79, 96, 0.667) 2px solid; border-radius: 12px; box-shadow: rgb(214, 214, 214) 2px 6px 10px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="">Title</label>
+                    <input type="text" class="form-control" value="{{title}}" readonly>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="">Status</label>
+                    <input type="text" class="form-control" value="{{status}}" readonly>
+                </div>
+                <div class="col-md-4">
+                    <label for="">Due Date</label>
+                    <input type="text" class="form-control" value="{{due_date}}" readonly>
+                </div>
+
+                <div class="col-md-12 mt-2">
+                    <label for="">Description</label>
+                    <input type="text" class="form-control" value="{{description}}" readonly>
+                </div>
+
+                <div class="col-md-12 mt-4">
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

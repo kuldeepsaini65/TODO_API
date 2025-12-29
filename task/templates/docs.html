@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+
+
+
+{% block style %}
+<style>
+    code{
+        font-size: 20px;
+    }
+    .api-container{
+        background-color: white;
+        padding: 10px;
+        margin: 15px 0px;
+        box-shadow: rgb(229, 229, 229) 6px 5px 5px;
+        border-radius: 12px;
+    }
+
+
+
+  .example pre {
+    background: #f6f8fa;
+    padding: 15px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 14px;
+  }
+
+  .keyword{
+    color: orangered;
+  }
+
+</style>
+{% endblock style %}
+{% block content %}
+<section class="page-title shadow-sm mb-4">
+  <h1>API Documentation</h1>
+</section>
+
+
+<section class='shadow-sm'>
+    <div class="api-container">
+        <code>/api/tasks/</code>
+        <h4 class="mt-3 fs-5">Fetch All Data</h4>
+        <p>This API is used to retrieve all tasks stored in the database. Request method <span class="keyword">GET</span> is used to retervie the json data</p>
+
+        <div class="example">
+            <pre>
+<code>
+{
+    "status": "success",
+    "data": [
+        {
+        "id": 1,
+        "title": "Task One",
+        "description": "Demo task",
+        "due_date": "2025-12-28",
+        "status": "PENDING"
+        },
+        {
+        "id": 2,
+        "title": "Task Two",
+        "description": "Another task",
+        "due_date": "2025-12-29",
+        "status": "COMPLETED"
+        }
+    ]
+}
+</code></pre>
+            </div>
+
+    </div>
+
+
+
+<div class="api-container">
+    <code>/api/tasks/&lt;task-id&gt;</code>
+    <h4 class="mt-3 fs-5">Retervie Single Data</h4>
+    <p>This API is used to retrieve detail of a single task using its unique ID.
+        Parameter <span class="keyword">ID</span> is passed to reterive the data.
+        Request method <span class="keyword">GET</span> is used to retervie the json data
+    </p>
+
+<div class="example">
+<pre>
+<code>
+{
+    "status": "success",
+    "data": [
+        {
+        "id": 1,
+        "title": "Task One",
+        "description": "Demo task",
+        "due_date": "2025-12-28",
+        "status": "PENDING"
+        }
+    ]
+}
+</code>
+</pre>
+</div>
+</div>
+
+
+
+<div class="api-container">
+    <code>/api/tasks/update/&lt;task-id&gt;</code>
+    <h4 class="mt-3 fs-5">Retervie Single Data</h4>
+    <p>This API is used to update a single task using its unique ID.
+        The task <span class="keyword">ID</span>  is passed as a URL parameter, and the update operation is performed using the <span class="keyword">PUT</span>  HTTP method.
+    </p>
+    
+    <div class="example">
+        <p>Example of Request Body which consist the fields of Task. Which can be Updated</p>
+        <pre>
+            <code>
+                {
+                    "title": "Updated task title",
+                    "description": "Updated description",
+                    "due_date": "2025-12-30",
+                    "status": "COMPLETED"
+                }
+            </code>
+        </pre>
+    </div>
+    
+    
+    <div class="example">
+        <p>After making <span class="keyword">PUT</span>  request this response will be returned</p>
+        <pre>
+            <code>
+                {
+                    "status": "success",
+                    "data": {
+                        "id": 13,
+                        "title": "This is updated",
+                        "description": "this is demo task and updated",
+                        "due_date": "2025-12-28",
+                        "status": "PENDING"
+                    }
+                }
+            </code>
+        </pre>
+    </div>
+</div>
+
+<div class="api-container">
+    <code>/api/tasks/delete/&lt;task-id&gt;</code>
+    <h4 class="mt-3 fs-5">Permanently Remove Specific Data</h4>
+    <p>
+        This API endpoint is responsible for deleting a single task record
+        from the database using its unique identifier (ID).
+        It allows the client to permanently remove a task that is no longer required.
+        <br>
+        <span class="keyword">DELETE</span> method is used to complete this action
+    </p>
+
+<div class="example">
+<pre>
+<code>
+{
+  "status": "success",
+  "message": "Task deleted successfully"
+}
+</code>
+</pre>
+</div>
+</div>
+</section>
+{% endblock content %}
