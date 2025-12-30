@@ -103,6 +103,9 @@ def task_update_api(request, id):
                 {"status": "error", "message": "Task not found"},
                 status=404
             )
+        
+
+
 
         return JsonResponse(
             {
@@ -162,33 +165,53 @@ def task_info_api(request, id):
                 return JsonResponse(
                     {'status' : 'error', 'data':'not found'}, status = 404
                 )
-
-
+            
+            
 
 @csrf_exempt
-def task_delete_api(request,id):
-    if request.method ==  'DELETE':
-        with connection.cursor() as cursor:
-            cursor.execute("DELETE FROM tasks WHERE id = %s ", [id])
-            num_deleted = cursor.rowcount 
-    
-            if num_deleted > 0:
-                status = 'success'
-                response = f"Successfully deleted {num_deleted} task(s)."
-            else:
-                status = 'failed'
-                response = "No task found with that ID."
+def task_delete_api(request, id):
 
-        return JsonResponse({'status':status, 'data':response})
-    
-    else:
+    if request.method != 'DELETE':
         return JsonResponse(
             {
-                'status':'failed',
-                'data' : 'this method is not valid'
-            }
+                'status': 'failed',
+                'data': 'Only DELETE method is allowed'
+            },
+            status=405
         )
 
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "DELETE FROM tasks WHERE id = %s",
+                [id]
+            )
+            num_deleted = cursor.rowcount
 
+        if num_deleted > 0:
+            return JsonResponse(
+                {
+                    'status': 'success',
+                    'data': f"Successfully deleted {num_deleted} task(s)."
+                },
+                status=200
+            )
+        else:
+            return JsonResponse(
+                {
+                    'status': 'failed',
+                    'data': 'No task found with that ID.'
+                },
+                status=404
+            )
+
+    except Exception as e:
+        return JsonResponse(
+            {
+                'status': 'error',
+                'message': str(e)
+            },
+            status=500
+        )
 
 
